@@ -1,10 +1,8 @@
 package com.aluracursos.forohub.security;
 
-import com.aluracursos.forohub.exceptions.JwtInvalidException;
 import com.aluracursos.forohub.model.User;
 import com.aluracursos.forohub.repository.UserRepository;
 import com.aluracursos.forohub.service.JwtService;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 
 // La clase SecurityFilter es un filtro personalizado que se encarga de interceptar

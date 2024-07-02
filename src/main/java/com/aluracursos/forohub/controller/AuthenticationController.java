@@ -4,7 +4,6 @@ import com.aluracursos.forohub.dtos.AuthUserDTO;
 import com.aluracursos.forohub.dtos.JwtTokenDTO;
 import com.aluracursos.forohub.model.User;
 import com.aluracursos.forohub.service.JwtService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,4 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtTokenDTO(jwtToken));
 
     }
-
-
 }
