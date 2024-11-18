@@ -24,6 +24,7 @@ public class CourseController {
     @Autowired
     private ICourseService service;
 
+    // POST: http://localhost:8080/course/create
     @PostMapping("/create")
     public ResponseEntity<CourseInfoDTO> createCourse(@RequestBody @Valid SaveCourseDTO saveCourseDTO,
                                                       UriComponentsBuilder uriComponentsBuilder) {

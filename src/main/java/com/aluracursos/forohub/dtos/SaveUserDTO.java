@@ -10,6 +10,9 @@ public record SaveUserDTO(
     String name,
 
     @NotBlank
+    String lastName,
+
+    @NotBlank
     @Pattern(regexp = "\\d{6,8}")
     String document,
 

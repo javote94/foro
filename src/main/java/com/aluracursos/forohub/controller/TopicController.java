@@ -26,6 +26,7 @@ public class TopicController {
     @Autowired
     private ITopicService service;
 
+    // http://localhost:8080/topic/create
     @PostMapping("/create")
     @Operation(summary = "Registra un nuevo tópico en la base de datos")
     public ResponseEntity<TopicInfoDTO> createTopic(@RequestBody @Valid SaveTopicDTO saveTopicDTO,
@@ -45,6 +46,7 @@ public class TopicController {
         return ResponseEntity.ok(topicPage);
     }
 
+    // GET: http://localhost:8080/topic/{id}
     @GetMapping("/{id}")
     @Operation(summary = "Selecciona un tópico en particular por su ID")
     public ResponseEntity<TopicInfoDTO> getTopic(@PathVariable Long id) {
@@ -52,6 +54,7 @@ public class TopicController {
         return ResponseEntity.ok(topicInfoDTO);
     }
 
+    // PUT: http://localhost:8080/topic/{id}
     @PutMapping("/{id}")
     @Operation(summary = "Actualiza los datos de un tópico existente en la base de datos")
     public ResponseEntity<TopicInfoDTO> updateTopic(@PathVariable Long id, @RequestBody UpdateTopicDTO updateTopicDTO) {
@@ -59,6 +62,7 @@ public class TopicController {
         return ResponseEntity.ok(topicInfoDTO);
     }
 
+     // DELETE: http://localhost:8080/topic/{id}
     @DeleteMapping("/{id}")
     @Operation(summary = "Realiza una baja lógica de un tópico alojado en la base de datos")
     public ResponseEntity deleteTopic(@PathVariable Long id) {

@@ -28,6 +28,9 @@ public class User implements UserDetails {
 
     private String name;
 
+    @Column(name = "last_name")
+    private String lastName;
+
     private String document;
 
     @Column(unique = true)
@@ -56,6 +59,7 @@ public class User implements UserDetails {
 
     public User(SaveUserDTO saveUserDTO) {
         this.name = saveUserDTO.name();
+        this.lastName = saveUserDTO.lastName();
         this.document = saveUserDTO.document();
         this.email = saveUserDTO.email();
         this.password = saveUserDTO.password();

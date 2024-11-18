@@ -17,6 +17,8 @@ public class AuthSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    // Este bean se inyecta en la capa de servicios para el cifrado de la contraseña que
+    // el usuario proporciona al momento de registrarse
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

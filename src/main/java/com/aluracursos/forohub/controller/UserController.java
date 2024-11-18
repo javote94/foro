@@ -22,6 +22,7 @@ public class UserController {
     @Autowired
     private IUserService service;
 
+    // http://localhost:8080/user/register
     @PostMapping("/register")
     public ResponseEntity<UserInfoDTO> registerUser(@RequestBody @Valid SaveUserDTO saveUserDTO,
                                                     UriComponentsBuilder uriComponentsBuilder) {

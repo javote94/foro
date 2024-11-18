@@ -31,6 +31,7 @@ public class AuthenticationController {
     @Autowired
     private JwtService jwtService;
 
+    // http://localhost:8080/login
     @PostMapping
     public ResponseEntity<JwtTokenDTO> authenticateUser(@RequestBody @Valid AuthUserDTO authUserDTO) {
 
@@ -48,7 +49,7 @@ public class AuthenticationController {
         // Genera un JWT con la información del usuario autenticado
         String jwtToken = jwtService.createJwtToken((User) authenticatedUser.getPrincipal());
 
-        // Retorna espuesta HTTP 200 (OK) que contiene el token JWT en el cuerpo de la respuesta.
+        // Retorna respuesta HTTP 200 (OK) que contiene el token JWT en el cuerpo de la respuesta.
         return ResponseEntity.ok(new JwtTokenDTO(jwtToken));
 
     }

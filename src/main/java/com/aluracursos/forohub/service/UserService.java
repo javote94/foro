@@ -34,6 +34,7 @@ public class UserService implements IUserService, UserDetailsService {
         return new UserInfoDTO(
                 user.getId(),
                 user.getName(),
+                user.getLastName(),
                 user.getDocument(),
                 user.getEmail()
         );
