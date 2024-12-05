@@ -34,4 +34,12 @@ public class Response {
 
     private Boolean active;
 
+    public Response(String message, User author, Topic topic) {
+        this.message = message;
+        this.creationDate = LocalDateTime.now();
+        this.solution = false;
+        this.topic = topic;
+        this.author = author;
+        this.active = true;
+    }
 }
