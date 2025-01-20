@@ -15,15 +15,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @Tag(name = "Registro de usuarios", description = "Ingrese sus datos para crear un nuevo usuario en el foro")
 public class UserController {
 
     @Autowired
     private IUserService service;
 
-    // http://localhost:8080/user/register
-    @PostMapping("/register")
+    // POST http://localhost:8080/users
+    @PostMapping
     public ResponseEntity<UserInfoDTO> registerUser(@RequestBody @Valid SaveUserDTO saveUserDTO,
                                                     UriComponentsBuilder uriComponentsBuilder) {
         UserInfoDTO userInfoDTO = service.save(saveUserDTO);

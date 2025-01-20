@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/courses")
 @SecurityRequirement(name = "bearer-key")
 @Tag(name = "Cursos", description = "Registrar nuevos cursos (en proceso de elaboración)")
 public class CourseController {
@@ -24,8 +24,8 @@ public class CourseController {
     @Autowired
     private ICourseService service;
 
-    // POST: http://localhost:8080/course/create
-    @PostMapping("/create")
+    // POST http://localhost:8080/courses
+    @PostMapping
     public ResponseEntity<CourseInfoDTO> createCourse(@RequestBody @Valid SaveCourseDTO saveCourseDTO,
                                                       UriComponentsBuilder uriComponentsBuilder) {
         CourseInfoDTO courseInfoDTO = service.create(saveCourseDTO);

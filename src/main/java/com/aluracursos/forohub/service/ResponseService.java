@@ -2,6 +2,7 @@ package com.aluracursos.forohub.service;
 
 import com.aluracursos.forohub.dtos.ResponseInfoDTO;
 import com.aluracursos.forohub.dtos.SaveResponseDTO;
+import com.aluracursos.forohub.exceptions.TopicNotFoundException;
 import com.aluracursos.forohub.model.Response;
 import com.aluracursos.forohub.model.Topic;
 import com.aluracursos.forohub.model.User;
@@ -16,17 +17,23 @@ import org.springframework.stereotype.Service;
 public class ResponseService implements IResponseService{
 
     @Autowired
-    private UserRepository userRepository;
+    private ResponseRepository responseRepository;
     @Autowired
     private TopicRepository topicRepository;
     @Autowired
-    private ResponseRepository responseRepository;
+    private IUserService userService;
 
     @Override
     @Transactional
-    public ResponseInfoDTO createResponse(SaveResponseDTO saveResponseDTO) {
-        User author = userRepository.getReferenceById(Long.valueOf(saveResponseDTO.idAuthor()));
-        Topic topic = topicRepository.getReferenceById(Long.valueOf(saveResponseDTO.idTopic()));
+    public ResponseInfoDTO createResponse(Long idTopic, SaveResponseDTO saveResponseDTO) {
+        // Obtener el usuario autenticado
+        User author = userService.getAuthenticatedUser();
+
+        // Verificar la existencia del tópico
+        Topic topic = topicRepository.findById(idTopic)
+                .orElseThrow(() -> new TopicNotFoundException("Topic not found with id: " + idTopic));
+
+        // Crear y guardar la respuesta
         Response response = responseRepository.save(
                 new Response(saveResponseDTO.message(), author, topic)
         );

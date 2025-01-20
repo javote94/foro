@@ -6,6 +6,6 @@ import com.aluracursos.forohub.dtos.SaveResponseDTO;
 
 public interface IResponseService {
 
-    ResponseInfoDTO createResponse(SaveResponseDTO saveResponseDTO);
+    ResponseInfoDTO createResponse(Long idTopic, SaveResponseDTO saveResponseDTO);
 
 }
