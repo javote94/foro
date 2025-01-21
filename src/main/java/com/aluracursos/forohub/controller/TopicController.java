@@ -22,10 +22,14 @@ import java.net.URI;
 @Tag(name = "Tópicos", description = "Endpoints para realizar operaciones CRUD sobre los tópicos del foro")
 public class TopicController {
 
+    private final ITopicService topicService;
+    private final IResponseService responseService;
+
     @Autowired
-    private ITopicService topicService;
-    @Autowired
-    private IResponseService responseService;
+    public TopicController(ITopicService topicService, IResponseService responseService) {
+        this.topicService = topicService;
+        this.responseService = responseService;
+    }
 
     // POST http://localhost:8080/topics
     @PostMapping

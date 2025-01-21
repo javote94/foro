@@ -25,11 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Autenticación", description = "Solicita el token JWT para que el usuario pueda autenticarse cuando realice solicitudes a otros endpoints protegidos de la API")
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     @Autowired
-    private JwtService jwtService;
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtService jwtService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+    }
 
     // http://localhost:8080/login
     @PostMapping

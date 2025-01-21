@@ -19,14 +19,18 @@ import java.net.URI;
 @Tag(name = "Registro de usuarios", description = "Ingrese sus datos para crear un nuevo usuario en el foro")
 public class UserController {
 
+    private final IUserService userService;
+
     @Autowired
-    private IUserService service;
+    public UserController(IUserService userService) {
+        this.userService = userService;
+    }
 
     // POST http://localhost:8080/users
     @PostMapping
     public ResponseEntity<UserInfoDTO> registerUser(@RequestBody @Valid SaveUserDTO saveUserDTO,
                                                     UriComponentsBuilder uriComponentsBuilder) {
-        UserInfoDTO userInfoDTO = service.save(saveUserDTO);
+        UserInfoDTO userInfoDTO = userService.save(saveUserDTO);
         URI url = uriComponentsBuilder.path("/user/{id}").buildAndExpand(userInfoDTO.id()).toUri();
         return ResponseEntity.created(url).body(userInfoDTO);  //HTTP 201 Created
     }

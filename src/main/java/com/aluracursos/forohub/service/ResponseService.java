@@ -16,12 +16,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResponseService implements IResponseService{
 
+    private final ResponseRepository responseRepository;
+    private final TopicRepository topicRepository;
+    private final IUserService userService;
+
     @Autowired
-    private ResponseRepository responseRepository;
-    @Autowired
-    private TopicRepository topicRepository;
-    @Autowired
-    private IUserService userService;
+    public ResponseService(ResponseRepository responseRepository, TopicRepository topicRepository, IUserService userService) {
+        this.responseRepository = responseRepository;
+        this.topicRepository = topicRepository;
+        this.userService = userService;
+    }
 
     @Override
     @Transactional

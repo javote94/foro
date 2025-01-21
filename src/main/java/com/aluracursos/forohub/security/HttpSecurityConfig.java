@@ -22,7 +22,7 @@ public class HttpSecurityConfig {
         httpSecurity.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests()
-                .requestMatchers(HttpMethod.POST, "/login", "/user/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/login", "/users").permitAll()
                 .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

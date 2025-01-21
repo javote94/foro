@@ -11,13 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CourseService implements ICourseService{
 
+    private final CourseRepository courseRepository;
+
     @Autowired
-    private CourseRepository repository;
+    public CourseService(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
 
     @Override
     @Transactional
     public CourseInfoDTO create(SaveCourseDTO saveCourseDTO) {
-        Course course = repository.save(new Course(saveCourseDTO));
+        Course course = courseRepository.save(new Course(saveCourseDTO));
         return new CourseInfoDTO(
                 course.getId(),
                 course.getName()

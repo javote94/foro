@@ -19,19 +19,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class TopicService implements ITopicService{
 
+    private final TopicRepository topicRepository;
+    private final UserRepository userRepository;
+    private final CourseRepository courseRepository;
+
     @Autowired
-    private TopicRepository topicRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CourseRepository courseRepository;
+    public TopicService(TopicRepository topicRepository, UserRepository userRepository, CourseRepository courseRepository) {
+        this.topicRepository = topicRepository;
+        this.userRepository = userRepository;
+        this.courseRepository = courseRepository;
+    }
 
     @Override
     @Transactional
     public TopicInfoDTO createTopic(SaveTopicDTO saveTopicDTO) {
         User author = userRepository.getReferenceById(Long.valueOf(saveTopicDTO.idAuthor()));
         Course course = courseRepository.findByName(saveTopicDTO.courseName())
-                .orElseThrow(() -> new RuntimeException("No existe un curso con el nombre dado"));
+                .orElseThrow(() -> new RuntimeException("There is no course with the given name"));
         Topic topic = topicRepository.save(
                 new Topic(saveTopicDTO.title(), saveTopicDTO.message(), author, course)
         );

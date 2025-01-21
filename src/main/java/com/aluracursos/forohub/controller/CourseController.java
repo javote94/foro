@@ -21,14 +21,18 @@ import java.net.URI;
 @Tag(name = "Cursos", description = "Registrar nuevos cursos (en proceso de elaboración)")
 public class CourseController {
 
+    private final ICourseService courseService;
+
     @Autowired
-    private ICourseService service;
+    public CourseController(ICourseService courseService) {
+        this.courseService = courseService;
+    }
 
     // POST http://localhost:8080/courses
     @PostMapping
     public ResponseEntity<CourseInfoDTO> createCourse(@RequestBody @Valid SaveCourseDTO saveCourseDTO,
                                                       UriComponentsBuilder uriComponentsBuilder) {
-        CourseInfoDTO courseInfoDTO = service.create(saveCourseDTO);
+        CourseInfoDTO courseInfoDTO = courseService.create(saveCourseDTO);
         URI url = uriComponentsBuilder.path("/course/{id}").buildAndExpand(courseInfoDTO.id()).toUri();
         return ResponseEntity.created(url).body(courseInfoDTO);  //HTTP 201 Created
     }
