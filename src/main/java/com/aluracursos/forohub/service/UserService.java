@@ -4,7 +4,6 @@ import com.aluracursos.forohub.dtos.SaveUserDTO;
 import com.aluracursos.forohub.dtos.UserInfoDTO;
 import com.aluracursos.forohub.model.User;
 import com.aluracursos.forohub.repository.UserRepository;
-import com.aluracursos.forohub.validations.EmailUniquenessValidator;
 import com.aluracursos.forohub.validations.UserValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,16 +63,7 @@ public class UserService implements IUserService, UserDetailsService {
         return user;
     }
 
-    public User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
 
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("Authenticated user not found in database.");
-        }
-        return user;
-    }
 
 
 }

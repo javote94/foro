@@ -6,5 +6,4 @@ import com.aluracursos.forohub.model.User;
 
 public interface IUserService {
     UserInfoDTO save(SaveUserDTO saveUserDTO);
-    User getAuthenticatedUser();
 }

@@ -21,7 +21,11 @@ public class Course {
     private String name;
 
     @ManyToMany(mappedBy = "courses")
-    private List<User> users;
+    private List<User> students;
+
+    @ManyToOne
+    @JoinColumn(name = "moderator_id")
+    private User moderator;
 
     @OneToMany(mappedBy = "course")
     private List<Topic> topics;
