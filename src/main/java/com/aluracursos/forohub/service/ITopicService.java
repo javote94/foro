@@ -1,6 +1,6 @@
 package com.aluracursos.forohub.service;
 
-import com.aluracursos.forohub.dtos.*;
+import com.aluracursos.forohub.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

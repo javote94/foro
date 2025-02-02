@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class HttpSecurityConfig {
 
     @Autowired
-    private SecurityFilter securityFilter;
+    private JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -23,28 +23,26 @@ public class HttpSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin estado
                 .authorizeRequests()
 
-                // Rutas públicas (accesibles sin autenticación)
+                // Rutas públicas
                 .requestMatchers(HttpMethod.POST, "/login", "/users").permitAll()
                 .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
-                // Rutas protegidas según roles
-                // Usuarios autenticados (USER, MODERATOR, ADMIN) pueden crear/responder tópicos
+                // Rutas protegidas
+                // Tópicos y respuestas
                 .requestMatchers(HttpMethod.POST, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
-
-                // Solo MODERATOR o ADMIN pueden modificar un tópico (por ejemplo, cambiar su estado)
-                .requestMatchers(HttpMethod.PUT, "/topics/**").hasAnyRole("MODERATOR", "ADMIN")
-
-                // Solo ADMIN puede eliminar un tópico
+                .requestMatchers(HttpMethod.PATCH, "/topics/{topicId}/status").hasAnyRole("MODERATOR", "ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/topics/{topicId}/active").hasAnyRole("MODERATOR", "ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/topics/{topicId}/content").hasRole("USER")
                 .requestMatchers(HttpMethod.DELETE, "/topics/**").hasRole("ADMIN")
 
-                // Solo ADMIN puede gestionar cursos
+                // Cursos
                 .requestMatchers("/courses/**").hasRole("ADMIN")
 
                 // Cualquier otra solicitud necesita autenticación
                 .anyRequest().authenticated()
 
                 // Configurar filtro JWT antes del filtro de autenticación por defecto
-                .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

@@ -1,13 +1,13 @@
 package com.aluracursos.forohub.controller;
 
-import com.aluracursos.forohub.dtos.*;
+import com.aluracursos.forohub.dto.*;
 import com.aluracursos.forohub.service.IResponseService;
 import com.aluracursos.forohub.service.ITopicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,16 +21,11 @@ import java.net.URI;
 @RequestMapping("/topics")
 @SecurityRequirement(name = "bearer-key")
 @Tag(name = "Tópicos", description = "Endpoints para realizar operaciones CRUD sobre los tópicos del foro")
+@RequiredArgsConstructor
 public class TopicController {
 
     private final ITopicService topicService;
     private final IResponseService responseService;
-
-    @Autowired
-    public TopicController(ITopicService topicService, IResponseService responseService) {
-        this.topicService = topicService;
-        this.responseService = responseService;
-    }
 
     // POST http://localhost:8080/topics
     @PostMapping
@@ -53,7 +48,7 @@ public class TopicController {
     }
 
     // GET http://localhost:8080/topics/{topicId}
-    @GetMapping("/{idTopic}")
+    @GetMapping("/{topicId}")
     @Operation(summary = "Selecciona un tópico en particular por su ID")
     public ResponseEntity<TopicInfoDTO> getTopic(@PathVariable Long topicId) {
         TopicInfoDTO topicInfoDTO = topicService.getTopicById(topicId);

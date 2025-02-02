@@ -1,6 +1,6 @@
 package com.aluracursos.forohub.repository;
 
-import com.aluracursos.forohub.model.Topic;
+import com.aluracursos.forohub.entity.Topic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
