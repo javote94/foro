@@ -8,10 +8,10 @@
 		<version>3.3.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.aluracursos</groupId>
-	<artifactId>forohub</artifactId>
+	<groupId>com.javote</groupId>
+	<artifactId>foro</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>forohub</name>
+	<name>foro</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
