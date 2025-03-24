@@ -9,6 +9,5 @@ import com.javote.foro.entity.User;
 public interface ICourseService {
     CourseInfoDTO createCourse(SaveCourseDTO saveCourseDTO);
     CourseInfoDTO addStudent(Long courseId, UpdateCourseDTO updateCourseDTO);
-    Boolean isModeratorOfCourse(Topic topic, User authenticatedUser);
     void deleteCourse(Long courseId);
 }

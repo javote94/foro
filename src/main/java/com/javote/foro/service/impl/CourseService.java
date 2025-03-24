@@ -48,13 +48,13 @@ public class CourseService implements ICourseService {
     @Transactional
     public CourseInfoDTO addStudent(Long courseId, UpdateCourseDTO updateCourseDTO) {
 
-        User moderator = authenticatedUserProvider.getAuthenticatedUser();
+        User user = authenticatedUserProvider.getAuthenticatedUser();
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course with id " + courseId + " not found"));
 
-        if (moderator.getProfile() == Profile.MODERATOR &&
-            !courseRepository.isModeratorOfCourse(moderator.getId(), course.getId())) {
+        if (user.getProfile() == Profile.MODERATOR &&
+            !courseRepository.isModeratorOfCourse(user.getId(), course.getId())) {
             throw new UnauthorizedModeratorException("You are not allowed to add students to this course");
         }
 
@@ -78,11 +78,6 @@ public class CourseService implements ICourseService {
                 .orElseThrow(() -> new CourseNotFoundException("Course with id " + courseId + " not found"));
 
         course.setActive(false);
-    }
-
-    @Override
-    public Boolean isModeratorOfCourse(Topic topic, User authenticatedUser) {
-        return courseRepository.existsByTopicIdAndModeratorId(topic.getId(), authenticatedUser.getId());
     }
 
 }

@@ -33,11 +33,11 @@ public class TopicController {
     public ResponseEntity<TopicInfoDTO> createTopic(@RequestBody @Valid SaveTopicDTO saveTopicDTO,
                                                     UriComponentsBuilder uriComponentsBuilder) {
         TopicInfoDTO topicInfoDTO = topicService.createTopic(saveTopicDTO);
-        URI url = uriComponentsBuilder.path("/topic/{id}").buildAndExpand(topicInfoDTO.id()).toUri();
+        URI url = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(topicInfoDTO.id()).toUri();
         return ResponseEntity.created(url).body(topicInfoDTO);  //HTTP 201 Created
     }
 
-    // GET http://localhost:8080/topics?courseId=4
+    // GET http://localhost:8080/topics?courseId=X
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @Operation(summary = "Proporciona el listado de tópicos")
@@ -49,6 +49,7 @@ public class TopicController {
 
     // GET http://localhost:8080/topics/{topicId}
     @GetMapping("/{topicId}")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @Operation(summary = "Selecciona un tópico en particular por su ID")
     public ResponseEntity<TopicInfoDTO> getTopic(@PathVariable Long topicId) {
         TopicInfoDTO topicInfoDTO = topicService.getTopicById(topicId);
@@ -59,8 +60,8 @@ public class TopicController {
     @PatchMapping("/{topicId}/content")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Modifica el título o mensaje del tópico")
-    public ResponseEntity<TopicInfoDTO> updateTopicContent(@PathVariable Long topicId, @RequestBody UpdateTopicContentDTO updateTopicContentDTO) {
-        TopicInfoDTO topicInfoDTO = topicService.updateTopicContent(topicId, updateTopicContentDTO);
+    public ResponseEntity<TopicInfoDTO> updateTopic(@PathVariable Long topicId, @RequestBody UpdateTopicDTO updateTopicDTO) {
+        TopicInfoDTO topicInfoDTO = topicService.updateTopic(topicId, updateTopicDTO);
         return ResponseEntity.ok(topicInfoDTO);
     }
 

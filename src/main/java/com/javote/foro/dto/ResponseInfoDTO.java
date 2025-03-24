@@ -6,9 +6,9 @@ public record ResponseInfoDTO(
 
         Long id,
         String message,
-        Long idAuthor,
-        Long idTopic,
-        String topicStatus,
+        Long authorId,
+        String authorName,
+        Long topicId,
         LocalDateTime creationDate,
         Boolean solution
 

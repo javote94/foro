@@ -10,8 +10,8 @@ public class ResponseMapper {
                 response.getId(),
                 response.getMessage(),
                 response.getAuthor().getId(),
+                response.getAuthor().getName() + " " + response.getAuthor().getLastName(),
                 response.getTopic().getId(),
-                response.getTopic().getStatus().toString(),
                 response.getCreationDate(),
                 response.getSolution()
         );

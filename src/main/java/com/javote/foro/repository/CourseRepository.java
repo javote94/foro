@@ -15,17 +15,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("""
             SELECT COUNT(c) > 0
             FROM Course c
-            JOIN c.topics t
-            WHERE t.id = :topicId
-              AND c.moderator.id = :moderatorId
-              AND c.active = true
-            """)
-    boolean existsByTopicIdAndModeratorId(@Param("topicId") Long topicId, @Param("moderatorId") Long moderatorId);
-
-
-    @Query("""
-            SELECT COUNT(c) > 0
-            FROM Course c
             WHERE c.id = :courseId
             AND c.moderator.id = :userId
             AND c.active = true
