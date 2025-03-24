@@ -22,12 +22,12 @@ public class ResponseController {
 
     private final IResponseService responseService;
 
-    // PATCH http://localhost:8080/responses/{responseId}/solution
-    @PatchMapping("/{responseId}/solution")
+    // PATCH http://localhost:8080/responses/{responseId}/toggle-solution
+    @PatchMapping("/{responseId}/toggle-solution")
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
-    @Operation(summary = "Marca una respuesta como solución y cambia el estado del tópico a RESOLVED")
-    public ResponseEntity<ResponseInfoDTO> markResponseAsSolution(@PathVariable Long responseId) {
-        ResponseInfoDTO responseInfoDTO = responseService.markResponseAsSolution(responseId);
+    @Operation(summary = "Marca o desmarcar una respuesta como solución")
+    public ResponseEntity<ResponseInfoDTO> toggleSolution(@PathVariable Long responseId) {
+        ResponseInfoDTO responseInfoDTO = responseService.toggleSolutionStatus(responseId);
         return ResponseEntity.ok(responseInfoDTO);
     }
 

@@ -29,7 +29,8 @@ public class TopicController {
 
     // POST http://localhost:8080/topics
     @PostMapping
-    @Operation(summary = "Crea un tópico")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @Operation(summary = "Crear un tópico")
     public ResponseEntity<TopicInfoDTO> createTopic(@RequestBody @Valid SaveTopicDTO saveTopicDTO,
                                                     UriComponentsBuilder uriComponentsBuilder) {
         TopicInfoDTO topicInfoDTO = topicService.createTopic(saveTopicDTO);
@@ -40,7 +41,7 @@ public class TopicController {
     // GET http://localhost:8080/topics?courseId=X
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
-    @Operation(summary = "Proporciona el listado de tópicos")
+    @Operation(summary = "Listar los tópicos")
     public ResponseEntity<Page<TopicInfoDTO>> listTopics(@RequestParam(required = false) Long courseId,
                                                          @PageableDefault(size = 5) Pageable pageable) {
         Page<TopicInfoDTO> topicPage = topicService.listTopics(courseId, pageable);
@@ -50,16 +51,16 @@ public class TopicController {
     // GET http://localhost:8080/topics/{topicId}
     @GetMapping("/{topicId}")
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
-    @Operation(summary = "Selecciona un tópico en particular por su ID")
+    @Operation(summary = "Seleccionar un tópico por su ID")
     public ResponseEntity<TopicInfoDTO> getTopic(@PathVariable Long topicId) {
         TopicInfoDTO topicInfoDTO = topicService.getTopicById(topicId);
         return ResponseEntity.ok(topicInfoDTO);
     }
 
-    // PATCH http://localhost:8080/topics/{topicId}/content
-    @PatchMapping("/{topicId}/content")
+    // PATCH http://localhost:8080/topics/{topicId}
+    @PatchMapping("/{topicId}")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Modifica el título o mensaje del tópico")
+    @Operation(summary = "Modificar el título y/o mensaje de un tópico")
     public ResponseEntity<TopicInfoDTO> updateTopic(@PathVariable Long topicId, @RequestBody UpdateTopicDTO updateTopicDTO) {
         TopicInfoDTO topicInfoDTO = topicService.updateTopic(topicId, updateTopicDTO);
         return ResponseEntity.ok(topicInfoDTO);
@@ -67,15 +68,17 @@ public class TopicController {
 
     // DELETE http://localhost:8080/topics/{topicId}
     @DeleteMapping("/{topicId}")
-    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
-    @Operation(summary = "Realiza una baja lógica de un tópico")
-    public ResponseEntity deleteTopic(@PathVariable Long topicId) {
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @Operation(summary = "Realizar baja lógica de un tópico")
+    public ResponseEntity<Void> deleteTopic(@PathVariable Long topicId) {
         topicService.deleteTopic(topicId);
         return ResponseEntity.noContent().build();
     }
 
     // POST http://localhost:8080/topics/{topicId}/responses
     @PostMapping("/{topicId}/responses")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @Operation(summary = "Responder a un tópico")
     public ResponseEntity<ResponseInfoDTO> createResponse(@PathVariable Long topicId,
                                                           @RequestBody @Valid SaveResponseDTO saveResponseDTO,
                                                           UriComponentsBuilder uriComponentsBuilder) {

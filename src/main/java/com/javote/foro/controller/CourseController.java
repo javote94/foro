@@ -26,8 +26,8 @@ public class CourseController {
 
     // POST http://localhost:8080/courses
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @Operation(summary = "Crea un curso")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Crear un curso")
     public ResponseEntity<CourseInfoDTO> createCourse(@RequestBody @Valid SaveCourseDTO saveCourseDTO,
                                                       UriComponentsBuilder uriComponentsBuilder) {
         CourseInfoDTO courseInfoDTO = courseService.createCourse(saveCourseDTO);
@@ -37,7 +37,7 @@ public class CourseController {
 
     @PatchMapping("/{courseId}")
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
-    @Operation(summary = "Agrega un estudiante al curso")
+    @Operation(summary = "Agregar un estudiante al curso")
     public ResponseEntity<CourseInfoDTO> addStudent(@PathVariable Long courseId,
                                                     @RequestBody UpdateCourseDTO updateCourseDTO){
         CourseInfoDTO courseInfoDTO = courseService.addStudent(courseId, updateCourseDTO);
@@ -45,9 +45,9 @@ public class CourseController {
     }
 
     @DeleteMapping("/{courseId}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @Operation(summary = "Elimina un curso")
-    public ResponseEntity deleteCourse(@PathVariable Long courseId) {
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Eliminar un curso")
+    public ResponseEntity<Void> deleteCourse(@PathVariable Long courseId) {
         courseService.deleteCourse(courseId);
         return ResponseEntity.noContent().build();
     }

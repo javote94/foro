@@ -18,14 +18,11 @@ import com.javote.foro.repository.TopicRepository;
 import com.javote.foro.service.IResponseService;
 import com.javote.foro.util.AuthenticatedUserProvider;
 import com.javote.foro.util.ResponseMapper;
-import com.javote.foro.validation.CourseAccessValidator;
 import com.javote.foro.validation.CourseAccessValidatorExecutor;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class ResponseService implements IResponseService {
 
         User author = authenticatedUserProvider.getAuthenticatedUser();
 
-        Topic topic = topicRepository.findById(topicId)
+        Topic topic = topicRepository.findByIdAndActiveTrue(topicId)
                 .orElseThrow(() -> new TopicNotFoundException("Topic not found with id: " + topicId));
 
         Course course = topic.getCourse();
@@ -64,33 +61,44 @@ public class ResponseService implements IResponseService {
 
     @Override
     @Transactional
-    public ResponseInfoDTO markResponseAsSolution(Long responseId) {
+    public ResponseInfoDTO toggleSolutionStatus(Long responseId) {
 
-        User authenticatedUser = authenticatedUserProvider.getAuthenticatedUser();
+        User user = authenticatedUserProvider.getAuthenticatedUser();
 
-        Response response = responseRepository.findById(responseId)
+        Response response = responseRepository.findByIdAndActiveTrue(responseId)
                 .orElseThrow(() -> new ResponseNotFoundException("Response with id " + responseId + " not found"));
 
         Topic topic = response.getTopic();
-
         Course course = topic.getCourse();
 
-        if (authenticatedUser.getProfile() == Profile.USER) {
-            if (!authenticatedUser.getId().equals(topic.getAuthor().getId())) {
-                throw new UnauthorizedStudentException("You are not allowed to mark this response as a solution.");
-            }
-        } else if (authenticatedUser.getProfile() == Profile.MODERATOR) {
-            if (!courseRepository.isModeratorOfCourse(authenticatedUser.getId(), course.getId())) {
-                throw new UnauthorizedModeratorException("You are not allowed to mark this response as a solution.");
-            }
+        if (user.getProfile() == Profile.USER &&
+            !user.getId().equals(topic.getAuthor().getId())) {
+            throw new UnauthorizedStudentException("You are not allowed to mark this response as a solution.");
         }
 
-        response.setSolution(true);
-        responseRepository.save(response);
+        if (user.getProfile() == Profile.MODERATOR &&
+            !courseRepository.isModeratorOfCourse(user.getId(), course.getId())) {
+            throw new UnauthorizedModeratorException("You are not allowed to mark this response as a solution.");
+        }
 
-        topic.setStatus(Status.RESOLVED);
+        // Si ya estaba marcada como solución → desmarcar
+        if (response.getSolution()) {
+            response.setSolution(false);
+            responseRepository.save(response);
+            // Verificar si ya no quedan respuestas marcadas
+            boolean hasOtherSolutions = responseRepository.existsByTopicIdAndSolutionTrue(topic.getId());
+            if (!hasOtherSolutions) {
+                topic.setStatus(Status.UNSOLVED);
+            }
+        } else {
+            // Marcar como solución
+            response.setSolution(true);
+            responseRepository.save(response);
+
+            topic.setStatus(Status.RESOLVED);
+        }
+
         topicRepository.save(topic);
-
         return ResponseMapper.toDto(response);
     }
 }

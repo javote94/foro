@@ -19,7 +19,7 @@ public class StudentCourseAccessValidator implements CourseAccessValidator {
 
         if(user.getProfile() == Profile.USER &&
            !courseRepository.isAStudentOfTheCourse(user.getId(),course.getId())){
-            throw new UnauthorizedStudentException("You are not allowed to create a topic in this course.");
+            throw new UnauthorizedStudentException("You do not have permission to perform the requested action");
         }
 
     }

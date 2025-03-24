@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "users")
 @Entity(name = "User")
@@ -39,10 +40,10 @@ public class User implements UserDetails {
     private Profile profile;
 
     @OneToMany(mappedBy = "author")
-    private List<Topic> topics;
+    private Set<Topic> topics;
 
     @OneToMany(mappedBy = "author")
-    private List<Response> responses;
+    private Set<Response> responses;
 
     @ManyToMany
     @JoinTable(
@@ -50,10 +51,10 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    private List<Course> courses; //cursos en los que está inscrito como estudiante
+    private Set<Course> courses; //cursos en los que está inscrito como estudiante
 
     @OneToMany(mappedBy = "moderator")
-    private List<Course> moderatedCourses;  //cursos que modera en su rol como moderador
+    private Set<Course> moderatedCourses;  //cursos que modera en su rol como moderador
 
     private Boolean active;
 

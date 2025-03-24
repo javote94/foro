@@ -4,18 +4,14 @@ import com.javote.foro.dto.CourseInfoDTO;
 import com.javote.foro.dto.SaveCourseDTO;
 import com.javote.foro.dto.UpdateCourseDTO;
 import com.javote.foro.entity.Course;
-import com.javote.foro.entity.Topic;
 import com.javote.foro.entity.User;
-import com.javote.foro.enums.Profile;
-import com.javote.foro.exception.CourseNotFoundException;
-import com.javote.foro.exception.ModeratorNotFoundException;
-import com.javote.foro.exception.UnauthorizedModeratorException;
-import com.javote.foro.exception.UserNotFoundException;
+import com.javote.foro.exception.*;
 import com.javote.foro.repository.CourseRepository;
 import com.javote.foro.repository.UserRepository;
 import com.javote.foro.service.ICourseService;
 import com.javote.foro.util.AuthenticatedUserProvider;
 import com.javote.foro.util.CourseMapper;
+import com.javote.foro.validation.CourseAccessValidatorExecutor;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +23,7 @@ public class CourseService implements ICourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final AuthenticatedUserProvider authenticatedUserProvider;
+    private final CourseAccessValidatorExecutor accessValidatorExecutor;
 
     @Override
     @Transactional
@@ -48,23 +45,21 @@ public class CourseService implements ICourseService {
     @Transactional
     public CourseInfoDTO addStudent(Long courseId, UpdateCourseDTO updateCourseDTO) {
 
-        User user = authenticatedUserProvider.getAuthenticatedUser();
-
-        Course course = courseRepository.findById(courseId)
+        Course course = courseRepository.findByIdAndActiveTrue(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course with id " + courseId + " not found"));
 
-        if (user.getProfile() == Profile.MODERATOR &&
-            !courseRepository.isModeratorOfCourse(user.getId(), course.getId())) {
-            throw new UnauthorizedModeratorException("You are not allowed to add students to this course");
-        }
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+
+        accessValidatorExecutor.validate(user, course);
 
         User student = userRepository.findStudentById(Long.valueOf(updateCourseDTO.studentId()))
                 .orElseThrow(() -> new UserNotFoundException("Student with id " + updateCourseDTO.studentId() + " not found"));
 
         if(!course.getStudents().contains(student)) {
             course.getStudents().add(student);
-            student.getCourses().add(course);
             courseRepository.save(course);
+        } else {
+            throw new StudentAlreadyEnrolledException("The student is already enrolled in the course");
         }
 
         return CourseMapper.toDto(course);
@@ -73,11 +68,18 @@ public class CourseService implements ICourseService {
     @Override
     public void deleteCourse(Long courseId) {
 
-        // Obtener el curso en base al id
-        Course course = courseRepository.findById(courseId)
+        Course course = courseRepository.findByIdAndActiveTrue(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course with id " + courseId + " not found"));
 
+        // Desactivar todos los tópicos del curso
+        course.getTopics().forEach(topic -> {
+            topic.setActive(false);
+            // Desactivar todas las respuestas del tópico
+            if (topic.getResponses() != null) {
+                topic.getResponses().forEach(response -> response.setActive(false));
+            }
+        });
+        // Finalmente, desactivar el curso
         course.setActive(false);
     }
-
 }

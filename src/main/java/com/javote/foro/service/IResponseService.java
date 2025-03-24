@@ -7,5 +7,5 @@ import com.javote.foro.dto.SaveResponseDTO;
 public interface IResponseService {
 
     ResponseInfoDTO createResponse(Long topicId, SaveResponseDTO saveResponseDTO);
-    ResponseInfoDTO markResponseAsSolution(Long responseId);
+    ResponseInfoDTO toggleSolutionStatus(Long responseId);
 }

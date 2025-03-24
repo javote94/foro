@@ -18,7 +18,7 @@ public class ModeratorCourseAccessValidator implements CourseAccessValidator {
     public void validate(User user, Course course) {
         if(user.getProfile() == Profile.MODERATOR &&
            !courseRepository.isModeratorOfCourse(user.getId(),course.getId())){
-            throw new UnauthorizedModeratorException("You are not allowed to create a topic in this course.");
+            throw new UnauthorizedModeratorException("You do not have permission to perform the requested action");
         }
     }
 }

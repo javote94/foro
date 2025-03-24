@@ -2,12 +2,14 @@ package com.javote.foro.service.impl;
 
 import com.javote.foro.dto.TopicInfoDTO;
 import com.javote.foro.dto.UpdateTopicDTO;
+import com.javote.foro.enums.Profile;
 import com.javote.foro.enums.Status;
 import com.javote.foro.exception.CourseNotFoundException;
 import com.javote.foro.exception.TopicNotFoundException;
 import com.javote.foro.entity.Course;
 import com.javote.foro.entity.Topic;
 import com.javote.foro.entity.User;
+import com.javote.foro.exception.UnauthorizedModeratorException;
 import com.javote.foro.exception.UnauthorizedStudentException;
 import com.javote.foro.util.TopicMapper;
 import com.javote.foro.repository.CourseRepository;
@@ -15,15 +17,14 @@ import com.javote.foro.repository.TopicRepository;
 import com.javote.foro.service.ITopicService;
 import com.javote.foro.util.AuthenticatedUserProvider;
 import com.javote.foro.dto.SaveTopicDTO;
-import com.javote.foro.validation.CourseAccessValidator;
 import com.javote.foro.validation.CourseAccessValidatorExecutor;
+import com.javote.foro.validation.TopicDeleteValidatorExecutor;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Service
@@ -34,6 +35,7 @@ public class TopicService implements ITopicService {
     private final CourseRepository courseRepository;
     private final AuthenticatedUserProvider authenticatedUserProvider;
     private final CourseAccessValidatorExecutor accessValidatorExecutor;
+    private final TopicDeleteValidatorExecutor topicDeleteValidatorExecutor;
 
 
     @Override
@@ -73,15 +75,14 @@ public class TopicService implements ITopicService {
 
             accessValidatorExecutor.validate(user, course);
 
-            topics = topicRepository.findTopicsByCourseId(course.getId(), pageable);
+            topics = topicRepository.findByCourseIdAndActiveTrue(course.getId(), pageable);
 
         // Caso 2: Si el usuario no proporciona un `courseId`
         } else {
             topics = switch (user.getProfile()) {
-                case USER -> topicRepository.findTopicsByEnrolledCourses(user.getId(), pageable);
-                case MODERATOR -> topicRepository.findTopicsByModeratedCourses(user.getId(), pageable);
+                case USER -> topicRepository.findByCourse_Students_IdAndActiveTrue(user.getId(), pageable);
+                case MODERATOR -> topicRepository.findByCourse_Moderator_IdAndActiveTrue(user.getId(), pageable);
                 case ADMIN -> topicRepository.findByActiveTrue(pageable);
-                default -> throw new RuntimeException("Invalid user role");
             };
         }
         return topics.map(TopicMapper::toDto);
@@ -92,7 +93,7 @@ public class TopicService implements ITopicService {
 
         User user = authenticatedUserProvider.getAuthenticatedUser();
 
-        Topic topic = topicRepository.findById(topicId)
+        Topic topic = topicRepository.findByIdAndActiveTrue(topicId)
                 .orElseThrow(() -> new TopicNotFoundException("Topic with id " + topicId + " not found"));
 
         Course course = topic.getCourse();
@@ -107,7 +108,7 @@ public class TopicService implements ITopicService {
     public TopicInfoDTO updateTopic(Long topicId, UpdateTopicDTO updateTopicDTO) {
 
         // Obtener el tópico en base al id
-        Topic topic = topicRepository.findById(topicId)
+        Topic topic = topicRepository.findByIdAndActiveTrue(topicId)
                 .orElseThrow(() -> new TopicNotFoundException("Topic with id " + topicId + " not found"));
 
         // Validar que el usuario autenticado sea el autor del tópico
@@ -138,16 +139,18 @@ public class TopicService implements ITopicService {
     @Transactional
     public void deleteTopic(Long topicId) {
 
-        Topic topic = topicRepository.findById(topicId)
+        Topic topic = topicRepository.findByIdAndActiveTrue(topicId)
                 .orElseThrow(() -> new TopicNotFoundException("Topic with id " + topicId + " not found"));
 
         User user = authenticatedUserProvider.getAuthenticatedUser();
-
         Course course = topic.getCourse();
 
-        accessValidatorExecutor.validate(user, course);
+        topicDeleteValidatorExecutor.validate(user, topic);
 
         topic.setActive(false);
+        // Baja lógica de las respuestas asociadas
+        if (topic.getResponses() != null) {
+            topic.getResponses().forEach(response -> response.setActive(false));
+        }
     }
-
 }

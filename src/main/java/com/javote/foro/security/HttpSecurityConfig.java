@@ -29,11 +29,11 @@ public class HttpSecurityConfig {
 
                 // Rutas protegidas
                 // Tópicos y respuestas
-                .requestMatchers(HttpMethod.GET, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/topics/{topicId}/content").hasRole("USER")
-                .requestMatchers(HttpMethod.DELETE, "/topics/**").hasAnyRole("MODERATOR", "ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/responses/{responseId}/solution").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/topics/**").hasRole("USER")
+                .requestMatchers(HttpMethod.DELETE, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/responses/{responseId}/toggle-solution").hasAnyRole("USER", "MODERATOR", "ADMIN")
 
                 // Cursos
                 .requestMatchers(HttpMethod.POST, "/courses/**").hasRole("ADMIN")

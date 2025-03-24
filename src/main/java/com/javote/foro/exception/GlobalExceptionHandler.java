@@ -180,6 +180,21 @@ public class GlobalExceptionHandler {
         );
     }
 
+
+    // Esta excepción se lanza si intenta inscribir un estudiante a un curso en el que ya está inscripto
+    @ExceptionHandler(StudentAlreadyEnrolledException.class)
+    public ResponseEntity<ErrorResponse> handleStudentAlreadyEnrolledException(
+            StudentAlreadyEnrolledException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponse.builder()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .error(ex.getMessage())
+                        .path(request.getRequestURI())
+                        .build()
+        );
+    }
+
+
     // Manejo de cualquier otra excepción inesperada (500)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(
