@@ -59,7 +59,7 @@ public class TopicController {
 
     // PATCH http://localhost:8080/topics/{topicId}
     @PatchMapping("/{topicId}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @Operation(summary = "Modificar el título y/o mensaje de un tópico")
     public ResponseEntity<TopicInfoDTO> updateTopic(@PathVariable Long topicId, @RequestBody UpdateTopicDTO updateTopicDTO) {
         TopicInfoDTO topicInfoDTO = topicService.updateTopic(topicId, updateTopicDTO);

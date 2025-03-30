@@ -35,6 +35,7 @@ public class CourseController {
         return ResponseEntity.created(url).body(courseInfoDTO);  //HTTP 201 Created
     }
 
+    // PATCH http://localhost:8080/courses/{courseId}
     @PatchMapping("/{courseId}")
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @Operation(summary = "Agregar un estudiante al curso")
@@ -44,6 +45,7 @@ public class CourseController {
         return ResponseEntity.ok(courseInfoDTO);
     }
 
+    // DELETE http://localhost:8080/courses/{courseId}
     @DeleteMapping("/{courseId}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Eliminar un curso")

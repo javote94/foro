@@ -57,6 +57,7 @@ public class CourseService implements ICourseService {
 
         if(!course.getStudents().contains(student)) {
             course.getStudents().add(student);
+            student.getCourses().add(course);
             courseRepository.save(course);
         } else {
             throw new StudentAlreadyEnrolledException("The student is already enrolled in the course");

@@ -194,6 +194,31 @@ public class GlobalExceptionHandler {
         );
     }
 
+    // Esta excepción se lanza si se intenta marcar como solución a una respuesta de un tópico cuando ya existe una
+    @ExceptionHandler(AnotherSolutionAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAnotherSolutionAlreadyExistsException(
+            AnotherSolutionAlreadyExistsException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponse.builder()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .error(ex.getMessage())
+                        .path(request.getRequestURI())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(UnauthorizedAuthorException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedAuthorException(
+            UnauthorizedAuthorException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                ErrorResponse.builder()
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .error(ex.getMessage())
+                        .path(request.getRequestURI())
+                        .build()
+        );
+    }
+
 
     // Manejo de cualquier otra excepción inesperada (500)
     @ExceptionHandler(Exception.class)

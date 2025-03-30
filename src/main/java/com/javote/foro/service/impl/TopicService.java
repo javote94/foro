@@ -4,13 +4,10 @@ import com.javote.foro.dto.TopicInfoDTO;
 import com.javote.foro.dto.UpdateTopicDTO;
 import com.javote.foro.enums.Profile;
 import com.javote.foro.enums.Status;
-import com.javote.foro.exception.CourseNotFoundException;
-import com.javote.foro.exception.TopicNotFoundException;
+import com.javote.foro.exception.*;
 import com.javote.foro.entity.Course;
 import com.javote.foro.entity.Topic;
 import com.javote.foro.entity.User;
-import com.javote.foro.exception.UnauthorizedModeratorException;
-import com.javote.foro.exception.UnauthorizedStudentException;
 import com.javote.foro.util.TopicMapper;
 import com.javote.foro.repository.CourseRepository;
 import com.javote.foro.repository.TopicRepository;
@@ -107,15 +104,13 @@ public class TopicService implements ITopicService {
     @Transactional
     public TopicInfoDTO updateTopic(Long topicId, UpdateTopicDTO updateTopicDTO) {
 
-        // Obtener el tópico en base al id
         Topic topic = topicRepository.findByIdAndActiveTrue(topicId)
                 .orElseThrow(() -> new TopicNotFoundException("Topic with id " + topicId + " not found"));
 
-        // Validar que el usuario autenticado sea el autor del tópico
         User user = authenticatedUserProvider.getAuthenticatedUser();
 
         if (!topic.getAuthor().getId().equals(user.getId())) {
-            throw new UnauthorizedStudentException("You can only modify your own topics.");
+            throw new UnauthorizedAuthorException("You can only modify your own topics.");
         }
 
         // Actualizar título y/o mensaje

@@ -11,8 +11,10 @@ public class TopicMapper {
 
     public static TopicInfoDTO toDto(Topic topic) {
 
-        List<ResponseInfoDTO> responseDTOs = topic.getResponses().stream()
-                .filter(Response::getActive)  // Solo respuestas activas
+        List<ResponseInfoDTO> responseDTOs = topic.getResponses() == null
+                ? List.of()
+                : topic.getResponses().stream()
+                .filter(Response::getActive)
                 .map(ResponseMapper::toDto)
                 .toList();
 

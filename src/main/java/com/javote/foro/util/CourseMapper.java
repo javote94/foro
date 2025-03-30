@@ -11,7 +11,11 @@ public class CourseMapper {
 
     public static CourseInfoDTO toDto(Course course){
 
-        List<UserInfoDTO> userDTOs = course.getStudents().stream()
+
+
+        List<UserInfoDTO> userDTOs = course.getStudents() == null
+                ? List.of()
+                :course.getStudents().stream()
                 .filter(User::getActive)  // Solo estudiantes activos
                 .map(UserMapper::toDto)
                 .toList();

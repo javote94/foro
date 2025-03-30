@@ -1,5 +1,6 @@
 package com.javote.foro.service.impl;
 
+import com.javote.foro.dto.SaveModeratorDTO;
 import com.javote.foro.dto.SaveUserDTO;
 import com.javote.foro.dto.UserInfoDTO;
 import com.javote.foro.enums.Profile;
@@ -25,10 +26,10 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public UserInfoDTO save(SaveUserDTO saveUserDTO) {
+    public UserInfoDTO saveStudent(SaveUserDTO saveUserDTO) {
 
         // Ejecuta todas las validaciones
-        validators.forEach(validator -> validator.validate(saveUserDTO));
+        validators.forEach(v -> v.validate(saveUserDTO));
 
         User user = User.builder()
                 .name(saveUserDTO.name())
@@ -37,6 +38,33 @@ public class UserService implements IUserService {
                 .email(saveUserDTO.email())
                 .password(passwordEncoder.encode(saveUserDTO.password()))
                 .profile(Profile.USER)
+                .active(true)
+                .build();
+
+        return UserMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    @Transactional
+    public UserInfoDTO saveModerator(SaveModeratorDTO saveModeratorDTO) {
+
+        SaveUserDTO asUser = new SaveUserDTO(
+                saveModeratorDTO.name(),
+                saveModeratorDTO.lastName(),
+                saveModeratorDTO.document(),
+                saveModeratorDTO.email(),
+                saveModeratorDTO.password()
+        );
+
+        validators.forEach(v -> v.validate(asUser));
+
+        User user = User.builder()
+                .name(saveModeratorDTO.name())
+                .lastName(saveModeratorDTO.lastName())
+                .document(saveModeratorDTO.document())
+                .email(saveModeratorDTO.email())
+                .password(passwordEncoder.encode(saveModeratorDTO.password()))
+                .profile(Profile.MODERATOR)
                 .active(true)
                 .build();
 

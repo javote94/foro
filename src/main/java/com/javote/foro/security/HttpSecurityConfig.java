@@ -28,12 +28,17 @@ public class HttpSecurityConfig {
                 .requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
                 // Rutas protegidas
+
+                // Registro de moderadores
+                .requestMatchers(HttpMethod.POST, "/moderators/**").hasRole("ADMIN")
+
                 // Tópicos y respuestas
                 .requestMatchers(HttpMethod.POST, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/topics/**").hasRole("USER")
+                .requestMatchers(HttpMethod.PATCH, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/topics/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/responses/{responseId}/toggle-solution").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/responses/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/responses/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
 
                 // Cursos
                 .requestMatchers(HttpMethod.POST, "/courses/**").hasRole("ADMIN")

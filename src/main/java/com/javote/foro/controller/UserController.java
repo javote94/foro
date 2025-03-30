@@ -3,6 +3,7 @@ package com.javote.foro.controller;
 import com.javote.foro.dto.SaveUserDTO;
 import com.javote.foro.dto.UserInfoDTO;
 import com.javote.foro.service.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,10 @@ public class UserController {
 
     // POST http://localhost:8080/users
     @PostMapping
-    public ResponseEntity<UserInfoDTO> register(@RequestBody @Valid SaveUserDTO saveUserDTO,
+    @Operation(summary = "Registrar un nuevo estudiante")
+    public ResponseEntity<UserInfoDTO> registerStudent(@RequestBody @Valid SaveUserDTO saveUserDTO,
                                                 UriComponentsBuilder uriComponentsBuilder) {
-        UserInfoDTO userInfoDTO = userService.save(saveUserDTO);
+        UserInfoDTO userInfoDTO = userService.saveStudent(saveUserDTO);
         URI url = uriComponentsBuilder.path("/user/{id}").buildAndExpand(userInfoDTO.id()).toUri();
         return ResponseEntity.created(url).body(userInfoDTO);  //HTTP 201 Created
     }

@@ -24,7 +24,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    // http://localhost:8080/login
+    // POST http://localhost:8080/login
     @PostMapping
     public ResponseEntity<JwtTokenDTO> login(@RequestBody @Valid AuthUserDTO authUserDTO) {
         // Retorna respuesta HTTP 200 (OK) que contiene el token JWT en el cuerpo de la respuesta.

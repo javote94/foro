@@ -8,4 +8,5 @@ public interface IResponseService {
 
     ResponseInfoDTO createResponse(Long topicId, SaveResponseDTO saveResponseDTO);
     ResponseInfoDTO toggleSolutionStatus(Long responseId);
+    void deleteResponse(Long responseId);
 }

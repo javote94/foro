@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/responses")
@@ -29,6 +26,15 @@ public class ResponseController {
     public ResponseEntity<ResponseInfoDTO> toggleSolution(@PathVariable Long responseId) {
         ResponseInfoDTO responseInfoDTO = responseService.toggleSolutionStatus(responseId);
         return ResponseEntity.ok(responseInfoDTO);
+    }
+
+    // DELETE http://localhost:8080/responses/{responseId}
+    @DeleteMapping("/{responseId}")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @Operation(summary = "Borrar respuesta")
+    public ResponseEntity<Void> deleteResponse(@PathVariable Long responseId) {
+        responseService.deleteResponse(responseId);
+        return ResponseEntity.noContent().build();
     }
 
 }
