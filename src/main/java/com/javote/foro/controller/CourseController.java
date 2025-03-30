@@ -18,7 +18,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/courses")
 @SecurityRequirement(name = "bearer-key")
-@Tag(name = "Cursos", description = "Registrar nuevos cursos")
+@Tag(name = "Courses", description = "Endpoints for course creation, enrollment and deletion.")
 @RequiredArgsConstructor
 public class CourseController {
 
@@ -27,7 +27,7 @@ public class CourseController {
     // POST http://localhost:8080/courses
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Crear un curso")
+    @Operation(summary = "Create a new course", description = "Only administrators can create new courses by assigning a moderator to each course.")
     public ResponseEntity<CourseInfoDTO> createCourse(@RequestBody @Valid SaveCourseDTO saveCourseDTO,
                                                       UriComponentsBuilder uriComponentsBuilder) {
         CourseInfoDTO courseInfoDTO = courseService.createCourse(saveCourseDTO);
@@ -38,7 +38,7 @@ public class CourseController {
     // PATCH http://localhost:8080/courses/{courseId}
     @PatchMapping("/{courseId}")
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
-    @Operation(summary = "Agregar un estudiante al curso")
+    @Operation(summary = "Enroll a student in a course", description = "Allows moderators (for their courses) or administrators to add students to a course.")
     public ResponseEntity<CourseInfoDTO> addStudent(@PathVariable Long courseId,
                                                     @RequestBody UpdateCourseDTO updateCourseDTO){
         CourseInfoDTO courseInfoDTO = courseService.addStudent(courseId, updateCourseDTO);
@@ -48,7 +48,7 @@ public class CourseController {
     // DELETE http://localhost:8080/courses/{courseId}
     @DeleteMapping("/{courseId}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Eliminar un curso")
+    @Operation(summary = "Logically delete a course", description = "Only administrators can deactivate a course. Topics and responses associated with the course will also be deactivated.")
     public ResponseEntity<Void> deleteCourse(@PathVariable Long courseId) {
         courseService.deleteCourse(courseId);
         return ResponseEntity.noContent().build();

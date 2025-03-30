@@ -20,7 +20,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/moderators")
-@Tag(name = "Registro de moderadores", description = "Solo los administradores pueden registrar moderadores")
+@Tag(name = "Moderator Registration", description = "Only administrators can register new moderators.")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearer-key")
 public class ModeratorController {
@@ -30,7 +30,7 @@ public class ModeratorController {
     // POST http://localhost:8080/moderators
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Registrar un nuevo moderador")
+    @Operation(summary = "Register a new moderator", description = "Creates a new user with the MODERATOR role. Only accessible to admins.")
     public ResponseEntity<UserInfoDTO> registerModerator(@RequestBody @Valid SaveModeratorDTO saveModeratorDTO,
                                                          UriComponentsBuilder uriBuilder) {
         UserInfoDTO userInfoDTO = userService.saveModerator(saveModeratorDTO);

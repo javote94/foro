@@ -19,11 +19,21 @@ public class SwaggerConfig {
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
-                                        .bearerFormat("JWT")))
+                                        .bearerFormat("JWT")
+                        )
+                )
                 .info(new Info()
-                        .title("API Forohub Alura")
-                        .description("La API Rest de Forohub ofrece la posibilidad de realizar operaciones CRUD sobre los tópicos del foro")
-                        .contact(new Contact().name("Javier Rameri")));
+                        .title("Academic Forum API")
+                        .description("""
+                                Academic Forum API is a RESTful service designed to manage an academic discussion forum within the context of virtual courses.
+                                It enables users to create topics and post responses, promoting collaboration and learning among participants.
+                                The system implements role-based access control (User, Moderator, Administrator), ensuring that each role has appropriate permissions and a secure, streamlined experience tailored to their responsibilities.
+                                """)
+                        .contact(new Contact()
+                                .name("Javier Rameri")
+                                .url("https://github.com/javote94")
+                        )
+                );
     }
 
     @Bean

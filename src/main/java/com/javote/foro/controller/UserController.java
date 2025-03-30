@@ -17,7 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/users")
-@Tag(name = "Registro de usuarios", description = "Ingrese sus datos para crear un nuevo usuario en el foro")
+@Tag(name = "User Registration", description = "Public endpoint to register new students in the forum.")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -25,7 +25,7 @@ public class UserController {
 
     // POST http://localhost:8080/users
     @PostMapping
-    @Operation(summary = "Registrar un nuevo estudiante")
+    @Operation(summary = "Register a new student", description = "Creates a new user with the USER role. No authentication required.")
     public ResponseEntity<UserInfoDTO> registerStudent(@RequestBody @Valid SaveUserDTO saveUserDTO,
                                                 UriComponentsBuilder uriComponentsBuilder) {
         UserInfoDTO userInfoDTO = userService.saveStudent(saveUserDTO);
