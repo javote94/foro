@@ -1,137 +1,159 @@
-# 🗨️ ForoHub API
 
 ![Status](https://img.shields.io/badge/status-en%20preparación-yellow)
-![Last Commit](https://img.shields.io/badge/last%20commit-Julio%202024-blue)
+![Last Commit](https://img.shields.io/badge/last%20commit-Abril%202025-blue)
 ![Java Version](https://img.shields.io/badge/Java-JDK%2017-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.1-brightgreen)
 ![MySQL](https://img.shields.io/badge/MySQL-v8.0-blue)
 ![IDE](https://img.shields.io/badge/IDE-IntelliJ%20IDEA-purple)
 
-## Índice
-1. [Descripción del proyecto](#descripción-del-proyecto)
-2. [Funcionalidades](#funcionalidades)
-3. [Dependencias de Maven](#dependencias-de-maven)
-4. [Estructura del proyecto](#estructura-del-proyecto)
-5. [Cómo correr la aplicación](#cómo-correr-la-aplicación)
-6. [Contribuciones](#contribuciones)
-7. [Agradecimientos](#agradecimientos)
+# 🗨️ Academic Forum API
 
-## Descripción del proyecto
-ForoHub API es una aplicación backend desarrollada con el framework Spring que permite la gestión de un foro de preguntas y respuestas. Los usuarios pueden registrarse e iniciar sesión mediante autenticación JWT para crear, actualizar, listar y eliminar tópicos, así como realizar consultas específicas a través de endpoints protegidos.
+**Academic Forum API** es una API RESTful construida con Java y Spring Boot para gestionar foros académicos en cursos virtuales. Incorpora autenticación JWT, control de acceso por roles (USER, MODERATOR, ADMIN) y gestión completa de cursos, tópicos y respuestas.
 
-## Funcionalidades
-- **Registro de usuarios**: Permite registrar nuevos usuarios.
+---
 
-- **Autenticación de usuarios**: Genera y valida tokens JWT para autenticación.
+## 📌 Índice
 
-- **Gestión de tópicos**: Crear, actualizar, listar y eliminar tópicos del foro.
+1. [Descripción general](#📖-descripción-general)  
+2. [Diagrama de clases UML](#📦-diagrama-de-clases-uml)
+3. [Diagrama Entidad-Relación (ERD)](#🗃️-diagrama-entidad-relación-erd)  
+4. [Funcionalidades principales](#🚀-funcionalidades-principales)  
+5. [Instalación y ejecución](#⚙️-instalación-y-ejecución)  
+6. [Swagger y documentación](#📚-swagger-y-documentación)  
+7. [Contribuciones](#🤝-contribuciones)  
+8. [Agradecimientos](#🎓-agradecimientos)
 
-- **Búsqueda de tópicos**: Consultar tópicos por nombre de curso y año específico.
+---
 
-- **Documentación de API**: Integración con Swagger para documentación interactiva
+## 📖 Descripción general
 
-## Dependencias de Maven
-- **spring-boot-starter-data-jpa**: Proporciona integración con Spring Data JPA para la gestión de datos y operaciones CRUD.
+Academic Forum API es una aplicación RESTful desarrollada con Java 17 y Spring Boot, orientada a gestionar un foro académico dentro del contexto de cursos virtuales. El sistema permite la interacción entre usuarios mediante la creación y participación en tópicos de discusión, promoviendo el intercambio de conocimiento de forma estructurada y segura.
 
-- **spring-boot-starter-security**: Añade funcionalidades de seguridad, incluyendo autenticación y autorización.
+Cuenta con un modelo de roles claramente definido:
 
-- **spring-boot-starter-validation**: Ofrece soporte para la validación de datos de entrada con Hibernate Validator.
+- 👤 **USER**: Estudiante que participa en cursos y puede crear tópicos y respuestas.
+- 🧑‍🏫 **MODERATOR**: Responsable de supervisar cursos asignados y moderar las actividades del foro.
+- 🛡️ **ADMIN**: Tiene control total sobre usuarios, cursos y contenido.
 
-- **spring-boot-starter-web**: Facilita la creación de aplicaciones web RESTful con Spring MVC.
+Características destacadas:
 
-- **flyway-core**: Herramienta de migración de base de datos para gestionar cambios en el esquema.
+- Seguridad basada en JWT, con protección de rutas y control de acceso por rol.
+- Reglas de negocio aplicadas por perfil de usuario, garantizando integridad y permisos correctos.
+- Baja lógica de recursos como cursos, tópicos y respuestas, manteniendo trazabilidad.
+- Documentación interactiva con Swagger, facilitando el uso y prueba de los endpoints de la API.
 
-- **flyway-mysql**: Extensión de Flyway para soporte específico de MySQL.
+---
 
-- **mysql-connector-j**: Conector JDBC para conectarse a una base de datos MySQL.
+## 📦 Diagrama de clases UML
 
-- **lombok**: Biblioteca para reducir el boilerplate en el código Java a través de anotaciones.
+Muestra la relación entre las entidades del dominio y cómo están modeladas en el backend:
 
-- **spring-boot-starter-test**: Proporciona dependencias necesarias para pruebas unitarias y de integración en Spring Boot.
+![UML Diagram](docs/images/uml.png)
 
-- **spring-security-test**: Añade soporte para pruebas de aplicaciones Spring Security.
+---
 
-- **java-jwt**: Biblioteca para crear y verificar JSON Web Tokens (JWT).
+## 🗃️ Diagrama Entidad-Relación (ERD)
 
-- **springdoc-openapi-starter-webmvc-ui**: Integra Swagger UI para generar documentación interactiva de la API.
+Representa la estructura de la base de datos MySQL, sus tablas y relaciones:
 
+![ERD Diagram](docs/images/erd.png)
 
-## Estructura del proyecto
-El proyecto está estructurado en varios paquetes, diseñados para separar las responsabilidades y facilitar el mantenimiento y la escalabilidad:
+---
 
-- **`com.aluracursos.forohub`**: Contiene la clase principal `ForohubApplication` que sirve como punto de entrada del programa.
+## 🚀 Funcionalidades principales
 
-- **`model`**: Contiene las entidades que representan los datos almacenados en la base de datos. Ejemplos: `Course`, `Response`, `Topic`, `User`.
+- **🔐 Autenticación y control de acceso**
+  - Autenticarse mediante JWT para acceder a recursos protegidos.
+  - Autorizar accesos según el perfil: `USER`, `MODERATOR` o `ADMIN`.
+  - Proteger endpoints sensibles con restricciones por rol.
 
-- **`repository`**: Define los repositorios para la interacción con la base de datos. Estos repositorios extienden `JpaRepository` para proporcionar operaciones CRUD y consultas personalizadas. Ejemplos: `CourseRepository`, `ResponseRepository`, `TopicRepository`, `UserRepository`.
+- **👥 Gestión de usuarios**
+  - Registrar nuevos estudiantes (USER) de forma pública.
+  - Registrar moderadores (MODERATOR) desde un endpoint exclusivo para administradores.
+  - Validar unicidad de email y formato de documento al momento del registro.
 
-- **`service`**: Contiene las clases de servicios que encapsulan la lógica de negocio. Ejemplos: `CourseService`, `TopicService`, `UserService`, `JwtService`.
+- **📚 Gestión de cursos**
+  - Crear nuevos cursos con asignación de moderadores (ADMIN).
+  - Agregar estudiantes a cursos (MODERATOR o ADMIN).
+  - Realizar baja lógica de cursos (ADMIN).
+  - Validar que el moderador esté autorizado a operar sobre sus cursos.
 
-- **`controller`**: Contiene las clases de controladores que gestionan las solicitudes HTTP y devuelven las respuestas adecuadas. Ejemplos: `AuthenticationController`, `CourseController`, `TopicController`, `UserController`.
+- **🗨️ Gestión de tópicos**
+  - Crear tópicos dentro de un curso al que se esté inscrito o se modere.
+  - Listar tópicos de todos los cursos asociados al usuario (filtrables por curso).
+  - Actualizar título o mensaje del tópico si se es el autor.
+  - Eliminar lógicamente un tópico según permisos del rol (autor, moderador del curso, o admin).
+  - Incluir respuestas asociadas en cada tópico listado o consultado.
 
-- **`dtos`**: Define los Data Transfer Objects (DTOs) utilizados para transferir datos entre la aplicación y los clientes. Ejemplos: `AuthUserDTO`, `JwtTokenDTO`, `SaveCourseDTO`, `TopicInfoDTO`.
+- **💬 Gestión de respuestas**
+  - Responder a tópicos si el usuario tiene acceso al curso correspondiente.
+  - Marcar o desmarcar una respuesta como solución (solo autores del tópico, moderadores o admin).
+  - Garantizar que solo una respuesta por tópico pueda estar marcada como solución.
+  - Eliminar lógicamente respuestas según permisos de rol.
+  - Sincronizar automáticamente el estado del tópico (RESOLVED / UNSOLVED) según las respuestas marcadas.
 
-- **`security`**: Contiene las configuraciones y filtros de seguridad para manejar la autenticación y autorización en la API. Ejemplos: `AuthSecurityConfig`, `HttpSecurityConfig`, `SecurityFilter`.
+---
 
-- **`enums`**: Define enumeraciones utilizadas en la aplicación para representar valores constantes. Ejemplos: `Profile`, `Status`.
-
-- **`exceptions`**: Define las excepciones personalizadas utilizadas en la aplicación para manejar errores específicos. Ejemplos: `JwtInvalidException`, `TopicNotFoundException`, `GlobalExceptionHandler`.
-
-- **`springdoc`**: Contiene la configuración de Springdoc OpenAPI para la generación de la documentación de la API.
-
-- **`resources`**: 
-  - **`application.properties`**: Archivo de configuración de la aplicación.
-
-  - **`db.migration`**: Carpeta que contiene los scripts de migración de Flyway, por ejemplo, `V1__initial-schema.sql`, `V2__insert-into-tables.sql`.
-
-
-## Cómo correr la aplicación
-Para correr la aplicación en tu computadora, sigue estos pasos:
+## ⚙️ Instalación y ejecución
 
 1. **Clonar el repositorio**
-    - Usa Git para clonar el repositorio en tu entorno local:
     ```bash
     git clone https://github.com/javote94/forohub.git
     ```
 
-2. **Configuración del archivo `application.properties`**
-    - Crear un archivo `application.properties` en el directorio `src/main/resources`.
-    
-    - Configurar las propiedades de la base de datos y la clave secreta JWT según tu entorno local.
+2. **Configuración de la base de datos y sus propiedades**
 
+    Crear el archivo `application.properties` en el directorio `src/main/resources` y define las siguientes propiedades:
+    
     ```properties
-    spring.application.name=forohub
-    spring.datasource.url=jdbc:mysql://localhost:3306/forohub
+    # src/main/resources/application.properties
+
+    # Nombre de la aplicación (opcional)
+    spring.application.name=foro
+
+    # Configuración de la base de datos
+    spring.datasource.url=jdbc:mysql://localhost:3306/foro
     spring.datasource.username=your_username
     spring.datasource.password=your_password
     spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+    # Configuración de Flyway (migraciones)
     spring.flyway.enabled=true
     spring.flyway.locations=classpath:db/migration
-    spring.mvc.throw-exception-if-no-handler-found=true
-    spring.web.resources.add-mappings=false
+    
+    # Configuración de seguridad (clave JWT)
     api.security.secret=your_secret_key
     ```
 
-3. **Preparación del entorno de trabajo**
-   - Asegúrate de tener instalado Java JDK 17. Si no, puedes descargarlo e instalarlo desde el sitio web de [Oracle](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html).
+3. **Requisitos previos**
+   - ☕ Java JDK 17
 
-   - Crea una base de datos MySQL llamada `forohub`. Si no tienes MySQL instalado, puedes descargarlo desde el sitio web oficial de [MySQL](https://dev.mysql.com/downloads/installer/).
+   - 🐬 MySQL 8+. Crea una base de datos llamada `foro`.
 
-   - También se recomienda utilizar IntelliJ IDEA para abrir y ejecutar el proyecto. Puedes descargarlo desde el sitio web de [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
+   - 💻 IntelliJ IDEA (recomendado)
 
 4. **Ejecución del proyecto**
-    - Abre el proyecto en IntelliJ IDEA.
+    - Abre el proyecto con IntelliJ IDEA.
     - Ejecuta la clase `ForohubApplication` para iniciar la aplicación.
 
 
-### Consideraciones adicionales
-- **Documentación interactiva**: Puedes acceder a la documentación interactiva de la API en `http://localhost:8080/swagger-ui.html`. Esta documentación generada automáticamente por Swagger proporciona una interfaz fácil de usar para explorar los diferentes endpoints disponibles, así como los campos necesarios para completar las solicitudes HTTP. Es una herramienta útil para comprender mejor cómo interactuar con la API y probar diferentes operaciones.
+## 📚 Swagger y documentación
 
+Una vez levantada la aplicación en el servidor local, accede a la documentación interactiva desde:
 
+🔗 [`http://localhost:8080/swagger-ui.html`](http://localhost:8080/swagger-ui.html)
 
-## Contribuciones
+Allí podrás:
+- Probar los endpoints
+- Ver las estructuras JSON esperadas
+- Autenticarse con JWT
+
+## 🤝 Contribuciones
 Este proyecto está en preparación. Cualquier feedback es bienvenido y si estás interesado en contribuir, estamos abiertos a pull requests o puedes [abrir un issue](https://github.com/javote94/forohub/issues) para discutir posibles cambios.
 
-## Agradecimientos
-Mis agradecimientos a las organizaciones Alura Latam y Oracle Next Education por proporcionar el contexto educativo para el desarrollo del proyecto. El apoyo y recursos de formación brindados han sido fundamentales en la realización de esta aplicación.
+## 🎓 Agradecimientos
+Esta proyecto fue desarrollado en el marco del programa **Oracle Next Education** junto a **Alura Latam**. Mis agradecimientos a estas organizaciones por proporcionar el contexto educativo y los recursos necesarios para el desarrollo del proyecto.
 
+---
+
+> Desarrollado por [Javier Rameri](https://github.com/javote94)
