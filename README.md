@@ -98,7 +98,7 @@ Representa la estructura de la base de datos MySQL, sus tablas y relaciones:
 
 1. **Clonar el repositorio**
     ```bash
-    git clone https://github.com/javote94/forohub.git
+    git clone https://github.com/javote94/foro.git
     ```
 
 2. **Configuración de la base de datos y sus propiedades**
