@@ -14,14 +14,14 @@
 
 ## 📌 Índice
 
-1. [Descripción general](#📖-descripción-general)  
-2. [Diagrama de clases UML](#📦-diagrama-de-clases-uml)
-3. [Diagrama Entidad-Relación (ERD)](#🗃️-diagrama-entidad-relación-erd)  
-4. [Funcionalidades principales](#🚀-funcionalidades-principales)  
-5. [Instalación y ejecución](#⚙️-instalación-y-ejecución)  
-6. [Swagger y documentación](#📚-swagger-y-documentación)  
-7. [Contribuciones](#🤝-contribuciones)  
-8. [Agradecimientos](#🎓-agradecimientos)
+1. [Descripción general](#descripción-general)  
+2. [Diagrama de clases UML](#diagrama-de-clases-uml)
+3. [Diagrama Entidad-Relación (ERD)](#diagrama-entidad-relación-erd)  
+4. [Funcionalidades principales](#funcionalidades-principales)  
+5. [Instalación y ejecución](#instalación-y-ejecución)  
+6. [Swagger y documentación](#swagger-y-documentación)  
+7. [Contribuciones](#contribuciones)  
+8. [Agradecimientos](#agradecimientos)
 
 ---
 
