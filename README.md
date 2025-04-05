@@ -10,7 +10,7 @@
 
 **Academic Forum API** es una API RESTful construida con Java y Spring Boot para gestionar foros académicos en cursos virtuales. Incorpora autenticación JWT, control de acceso por roles (USER, MODERATOR, ADMIN) y gestión completa de cursos, tópicos y respuestas.
 
----
+
 
 ## 📌 Índice
 
@@ -23,7 +23,7 @@
 7. [Contribuciones](#contribuciones)  
 8. [Agradecimientos](#agradecimientos)
 
----
+
 
 ## 📖 Descripción general
 
@@ -42,7 +42,6 @@ Características destacadas:
 - Baja lógica de recursos como cursos, tópicos y respuestas, manteniendo trazabilidad.
 - Documentación interactiva con Swagger, facilitando el uso y prueba de los endpoints de la API.
 
----
 
 ## 📦 Diagrama de clases UML
 
@@ -50,7 +49,6 @@ Muestra la relación entre las entidades del dominio y cómo están modeladas en
 
 ![UML Diagram](docs/images/uml.png)
 
----
 
 ## 🗃️ Diagrama Entidad-Relación (ERD)
 
@@ -58,7 +56,6 @@ Representa la estructura de la base de datos MySQL, sus tablas y relaciones:
 
 ![ERD Diagram](docs/images/erd.png)
 
----
 
 ## 🚀 Funcionalidades principales
 
@@ -91,8 +88,6 @@ Representa la estructura de la base de datos MySQL, sus tablas y relaciones:
   - Garantizar que solo una respuesta por tópico pueda estar marcada como solución.
   - Eliminar lógicamente respuestas según permisos de rol.
   - Sincronizar automáticamente el estado del tópico (RESOLVED / UNSOLVED) según las respuestas marcadas.
-
----
 
 ## ⚙️ Instalación y ejecución
 
@@ -147,6 +142,26 @@ Allí podrás:
 - Probar los endpoints
 - Ver las estructuras JSON esperadas
 - Autenticarse con JWT
+
+
+## 🧪 Usuarios de prueba
+
+La base de datos inicial incluye usuarios predefinidos con distintos roles, útiles para probar la autenticación y las funcionalidades protegidas:
+
+| Email                      | Password | Rol       | Descripción                               |
+|----------------------------|----------|-----------|-------------------------------------------|
+| `michaelsmith@mail.com`    | 123456   | USER      | Estudiante inscrito en Java y Python      |
+| `emilyjohnson@mail.com`    | abcdef   | USER      | Estudiante inscrito solo en Java          |
+| `jameswilliams@mail.com`   | 123abc   | USER      | Estudiante inscrito solo en Python        |
+| `oliviabrown@mail.com`     | 654321   | USER      | Estudiante en ambos cursos                |
+| `williamjones@mail.com`    | xyz123   | USER      | Estudiante inscrito solo en Python        |
+| `sophiagarcia@mail.com`    | pass12   | USER      | Estudiante inscrito solo en Java          |
+| `danielmartinez@mail.com`  | qwerty   | USER      | Estudiante inscrito en Python             |
+| `gracedavis@mail.com`      | zxcvbn   | USER      | Estudiante en ambos cursos                |
+| `henrywilson@mail.com`     | 112233   | MODERATOR | Moderador asignado a ambos cursos         |
+| `alicetaylor@mail.com`     | admin1   | ADMIN     | Administradora del sistema                |
+
+> 📌 **Importante**: Todos los usuarios están activos y pueden autenticarse usando el endpoint `/login` para obtener su token JWT.
 
 ## 🤝 Contribuciones
 Este proyecto está en preparación. Cualquier feedback es bienvenido y si estás interesado en contribuir, estamos abiertos a pull requests o puedes [abrir un issue](https://github.com/javote94/forohub/issues) para discutir posibles cambios.
