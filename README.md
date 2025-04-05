@@ -19,9 +19,10 @@
 3. [Diagrama Entidad-Relación (ERD)](#diagrama-entidad-relación-erd)  
 4. [Funcionalidades principales](#funcionalidades-principales)  
 5. [Instalación y ejecución](#instalación-y-ejecución)  
-6. [Swagger y documentación](#swagger-y-documentación)  
-7. [Contribuciones](#contribuciones)  
-8. [Agradecimientos](#agradecimientos)
+6. [Swagger y documentación](#swagger-y-documentación)
+7. [Usuarios de prueba](#usuarios-de-prueba)
+8. [Contribuciones](#contribuciones)  
+9. [Agradecimientos](#agradecimientos)
 
 
 
@@ -129,7 +130,7 @@ Representa la estructura de la base de datos MySQL, sus tablas y relaciones:
 
 4. **Ejecución del proyecto**
     - Abre el proyecto con IntelliJ IDEA.
-    - Ejecuta la clase `ForohubApplication` para iniciar la aplicación.
+    - Ejecuta la clase `ForoApplication` para iniciar la aplicación.
 
 
 ## 📚 Swagger y documentación
@@ -142,7 +143,6 @@ Allí podrás:
 - Probar los endpoints
 - Ver las estructuras JSON esperadas
 - Autenticarse con JWT
-
 
 ## 🧪 Usuarios de prueba
 
@@ -164,10 +164,10 @@ La base de datos inicial incluye usuarios predefinidos con distintos roles, úti
 > 📌 **Importante**: Todos los usuarios están activos y pueden autenticarse usando el endpoint `/login` para obtener su token JWT.
 
 ## 🤝 Contribuciones
-Este proyecto está en preparación. Cualquier feedback es bienvenido y si estás interesado en contribuir, estamos abiertos a pull requests o puedes [abrir un issue](https://github.com/javote94/forohub/issues) para discutir posibles cambios.
+Este proyecto está en preparación. Cualquier feedback es bienvenido y si estás interesado en contribuir, estamos abiertos a pull requests o puedes [abrir un issue](https://github.com/javote94/foro/issues) para discutir posibles cambios.
 
 ## 🎓 Agradecimientos
-Esta proyecto fue desarrollado en el marco del programa **Oracle Next Education** junto a **Alura Latam**. Mis agradecimientos a estas organizaciones por proporcionar el contexto educativo y los recursos necesarios para el desarrollo del proyecto.
+Este proyecto fue desarrollado en el marco del programa **Oracle Next Education** junto a **Alura Latam**. Mis agradecimientos a estas organizaciones por proporcionar el contexto educativo y los recursos necesarios para el desarrollo del proyecto.
 
 ---
 
